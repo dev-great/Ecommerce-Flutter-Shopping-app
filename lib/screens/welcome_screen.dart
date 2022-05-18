@@ -68,6 +68,7 @@ class Welcome extends StatelessWidget {
                           Text(
                             "Ti",
                             style: TextStyle(
+                                fontFamily: "Poppins",
                                 fontSize: 40,
                                 color: Color(0xFFFFA412),
                                 fontWeight: FontWeight.bold),
@@ -75,6 +76,7 @@ class Welcome extends StatelessWidget {
                           Text(
                             "mart",
                             style: TextStyle(
+                                fontFamily: "Poppins",
                                 fontSize: 40,
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold),
@@ -87,6 +89,7 @@ class Welcome extends StatelessWidget {
                       child: const Text(
                         "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
                         style: TextStyle(
+                            fontFamily: "Poppins",
                             fontSize: 16,
                             color: Colors.white,
                             fontWeight: FontWeight.normal),
@@ -111,6 +114,7 @@ class Welcome extends StatelessWidget {
                             child: Text(
                               "Get Started",
                               style: TextStyle(
+                                  fontFamily: "Poppins",
                                   fontSize: 17,
                                   color: Color(0xFFFFA412),
                                   fontWeight: FontWeight.normal),

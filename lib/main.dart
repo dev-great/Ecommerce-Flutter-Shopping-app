@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:quicktel/screens/home.dart';
@@ -10,37 +11,25 @@ import 'package:quicktel/screens/nav_screens/shop.dart';
 import 'package:quicktel/screens/auth_screens/register_screen.dart';
 import 'package:quicktel/screens/welcome_screen.dart';
 
-const graphQLProducts = """
-query getInventoriesAtRandom{
-  getInventoriesAtRandom{
-    inventoryId
-    Images{
-      smallImageOnlineURL
-    }
-    inventoryName
-    
-  }
-  
-}""";
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  runApp(const MyApp());
+  await Firebase.initializeApp().then((value) {
+    runApp(const MyApp());
+  });
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    User? user = FirebaseAuth.instance.currentUser;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: Welcome.id,
+      initialRoute: user != null ? Home.id : Welcome.id,
       routes: {
         Welcome.id: (context) => const Welcome(),
         Register.id: (context) => const Register(),

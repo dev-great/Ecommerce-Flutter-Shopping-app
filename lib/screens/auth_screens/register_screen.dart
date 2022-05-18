@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:quicktel/components/auth_snippets/auth_btn.dart';
+import 'package:quicktel/components/auth_snippets/facebook_btn.dart';
+import 'package:quicktel/components/auth_snippets/google_btn.dart';
 import 'package:quicktel/screens/auth_screens/login_screen.dart';
 import 'package:quicktel/state/auth.dart';
 import 'package:quicktel/state/validator.dart';
@@ -54,7 +57,7 @@ class _RegisterState extends State<Register> {
                     Text(
                       "Sign up",
                       style: TextStyle(
-                          fontFamily: "GTWalsheimPro",
+                          fontFamily: "Poppins",
                           fontSize: 34,
                           color: Colors.black,
                           fontWeight: FontWeight.bold),
@@ -90,7 +93,7 @@ class _RegisterState extends State<Register> {
                                   labelStyle: const TextStyle(
                                     color: Colors.black54,
                                     fontSize: 16,
-                                    fontFamily: "GTWalsheimPro",
+                                    fontFamily: "Poppins",
                                   )),
                               controller: _nameTextController,
                               focusNode: _focusName,
@@ -123,7 +126,7 @@ class _RegisterState extends State<Register> {
                                   labelStyle: const TextStyle(
                                     color: Colors.black54,
                                     fontSize: 16,
-                                    fontFamily: "GTWalsheimPro",
+                                    fontFamily: "Poppins",
                                   )),
                               controller: _emailTextController,
                               focusNode: _focusEmail,
@@ -150,7 +153,7 @@ class _RegisterState extends State<Register> {
                                   labelStyle: TextStyle(
                                     color: Colors.black54,
                                     fontSize: 16,
-                                    fontFamily: "GTWalsheimPro",
+                                    fontFamily: "Poppins",
                                   )),
                               controller: _passwordTextController,
                               focusNode: _focusPassword,
@@ -175,6 +178,7 @@ class _RegisterState extends State<Register> {
                                   child: Text(
                                     "Already have an account?",
                                     style: TextStyle(
+                                        fontFamily: "Poppins",
                                         fontSize: 16,
                                         color: Colors.black,
                                         fontWeight: FontWeight.normal),
@@ -198,6 +202,13 @@ class _RegisterState extends State<Register> {
                               setState(() {
                                 _isProcessing = true;
                               });
+                              if (_nameTextController.text.isEmpty ||
+                                  _emailTextController.text.isEmpty ||
+                                  _passwordTextController.text.isEmpty) {
+                                setState(() {
+                                  _isProcessing = false;
+                                });
+                              }
 
                               if (_registerFormKey.currentState!.validate()) {
                                 User? user =
@@ -219,26 +230,8 @@ class _RegisterState extends State<Register> {
                                 }
                               }
                             },
-                            child: Container(
-                              height: 50,
-                              width: MediaQuery.of(context).size.width,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: const Color(0xFFFFA412),
-                              ),
-                              child: Center(
-                                child: _isProcessing
-                                    ? const CircularProgressIndicator()
-                                    : const Text(
-                                        "SIGN UP",
-                                        style: TextStyle(
-                                            fontSize: 17,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.normal),
-                                        textAlign: TextAlign.center,
-                                      ),
-                              ),
-                            ),
+                            child: AuthBtn(
+                                isProcessing: _isProcessing, title: 'Sign Up'),
                           ),
                         ),
                         SizedBox(
@@ -250,6 +243,7 @@ class _RegisterState extends State<Register> {
                             const Text(
                               "Or sign up with social account",
                               style: TextStyle(
+                                  fontFamily: "Poppins",
                                   fontSize: 17,
                                   color: Colors.black,
                                   fontWeight: FontWeight.normal),
@@ -259,48 +253,10 @@ class _RegisterState extends State<Register> {
                               padding: const EdgeInsets.only(top: 10),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    height: 50,
-                                    width: 70,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      color: Colors.white,
-                                    ),
-                                    child: const Center(
-                                      child: ClipRRect(
-                                        child: Image(
-                                          height: 25,
-                                          width: 25,
-                                          image: AssetImage(
-                                              "assets/icons/1534129544.png"),
-                                          fit: BoxFit.fill,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 20,
-                                  ),
-                                  Container(
-                                    height: 50,
-                                    width: 70,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      color: Colors.white,
-                                    ),
-                                    child: const Center(
-                                      child: ClipRRect(
-                                        child: Image(
-                                          height: 25,
-                                          width: 25,
-                                          image: AssetImage(
-                                              "assets/icons/facebook.png"),
-                                          fit: BoxFit.fill,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
+                                children: const [
+                                  GoogleBtn(),
+                                  SizedBox(width: 20),
+                                  FacebookBtn(),
                                 ],
                               ),
                             )

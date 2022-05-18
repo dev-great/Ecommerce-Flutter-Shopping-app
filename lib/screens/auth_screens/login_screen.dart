@@ -1,6 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:quicktel/components/auth_snippets/auth_btn.dart';
+import 'package:quicktel/components/auth_snippets/facebook_btn.dart';
+import 'package:quicktel/components/auth_snippets/google_btn.dart';
+import 'package:quicktel/components/const.dart';
 import 'package:quicktel/screens/home.dart';
 import 'package:quicktel/screens/auth_screens/register_screen.dart';
 import 'package:quicktel/state/auth.dart';
@@ -20,9 +24,7 @@ class _LoginState extends State<Login> {
   final _passwordTextController = TextEditingController();
   final _focusEmail = FocusNode();
   final _focusPassword = FocusNode();
-
   bool _isProcessing = false;
-  bool _isValidate = false;
 
   @override
   Widget build(BuildContext context) {
@@ -32,15 +34,15 @@ class _LoginState extends State<Login> {
         _focusPassword.unfocus();
       },
       child: Scaffold(
-        backgroundColor: const Color(0xFFE5E5E5),
+        backgroundColor: bgcl,
         appBar: AppBar(
-          backgroundColor: const Color(0xFFE5E5E5),
+          backgroundColor: bgcl,
           elevation: 0,
           leading: IconButton(
               onPressed: () {
                 Navigator.pop(context);
               },
-              icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black)),
+              icon: const Icon(Icons.arrow_back_ios_new, color: blackcl)),
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -52,7 +54,7 @@ class _LoginState extends State<Login> {
                     Text(
                       "Login",
                       style: TextStyle(
-                          fontFamily: "GTWalsheimPro",
+                          fontFamily: "Poppins",
                           fontSize: 34,
                           color: Colors.black,
                           fontWeight: FontWeight.bold),
@@ -69,7 +71,7 @@ class _LoginState extends State<Login> {
                       children: [
                         Container(
                           height: 64,
-                          color: Colors.white,
+                          color: lightcl,
                           child: Padding(
                             padding: const EdgeInsets.only(left: 20, top: 10),
                             child: TextFormField(
@@ -77,7 +79,7 @@ class _LoginState extends State<Login> {
                                     AutovalidateMode.onUserInteraction,
                                 decoration: InputDecoration(
                                     border: InputBorder.none,
-                                    fillColor: Colors.black,
+                                    fillColor: blackcl,
                                     labelText: "Email",
                                     suffixIcon:
                                         _emailTextController.text.isEmpty
@@ -89,7 +91,7 @@ class _LoginState extends State<Login> {
                                     labelStyle: const TextStyle(
                                       color: Colors.black54,
                                       fontSize: 16,
-                                      fontFamily: "GTWalsheimPro",
+                                      fontFamily: "Poppins",
                                     )),
                                 controller: _emailTextController,
                                 focusNode: _focusEmail,
@@ -97,6 +99,7 @@ class _LoginState extends State<Login> {
                                   Validator.validateEmail(
                                     email: value,
                                   );
+                                  return null;
                                 }),
                           ),
                         ),
@@ -104,7 +107,7 @@ class _LoginState extends State<Login> {
                         Container(
                           width: MediaQuery.of(context).size.width,
                           height: 64,
-                          color: Colors.white,
+                          color: lightcl,
                           child: Padding(
                             padding: const EdgeInsets.only(left: 10),
                             child: TextFormField(
@@ -117,7 +120,7 @@ class _LoginState extends State<Login> {
                                   labelStyle: TextStyle(
                                     color: Colors.black54,
                                     fontSize: 16,
-                                    fontFamily: "GTWalsheimPro",
+                                    fontFamily: "Poppins",
                                   )),
                               controller: _passwordTextController,
                               focusNode: _focusPassword,
@@ -142,8 +145,9 @@ class _LoginState extends State<Login> {
                                   child: Text(
                                     "Forgot your password?",
                                     style: TextStyle(
+                                        fontFamily: "Poppins",
                                         fontSize: 16,
-                                        color: Colors.black,
+                                        color: blackcl,
                                         fontWeight: FontWeight.normal),
                                   ),
                                 ),
@@ -169,6 +173,12 @@ class _LoginState extends State<Login> {
                                 setState(() {
                                   _isProcessing = true;
                                 });
+                                if (_emailTextController.text.isEmpty ||
+                                    _passwordTextController.text.isEmpty) {
+                                  setState(() {
+                                    _isProcessing = false;
+                                  });
+                                }
 
                                 User? user =
                                     await FireAuth.signInUsingEmailPassword(
@@ -185,26 +195,8 @@ class _LoginState extends State<Login> {
                                 }
                               }
                             },
-                            child: Container(
-                              height: 50,
-                              width: MediaQuery.of(context).size.width,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: const Color(0xFFFFA412),
-                              ),
-                              child: Center(
-                                child: _isProcessing
-                                    ? const CircularProgressIndicator()
-                                    : const Text(
-                                        "LOGIN",
-                                        style: TextStyle(
-                                            fontSize: 17,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.normal),
-                                        textAlign: TextAlign.center,
-                                      ),
-                              ),
-                            ),
+                            child: AuthBtn(
+                                isProcessing: _isProcessing, title: 'Login'),
                           ),
                         ),
                         SizedBox(
@@ -217,6 +209,7 @@ class _LoginState extends State<Login> {
                               "Or login with social account",
                               style: TextStyle(
                                   fontSize: 17,
+                                  fontFamily: "Poppins",
                                   color: Colors.black,
                                   fontWeight: FontWeight.normal),
                               textAlign: TextAlign.center,
@@ -225,48 +218,10 @@ class _LoginState extends State<Login> {
                               padding: const EdgeInsets.only(top: 10),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    height: 50,
-                                    width: 70,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      color: Colors.white,
-                                    ),
-                                    child: const Center(
-                                      child: ClipRRect(
-                                        child: Image(
-                                          height: 25,
-                                          width: 25,
-                                          image: AssetImage(
-                                              "assets/icons/1534129544.png"),
-                                          fit: BoxFit.fill,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 20,
-                                  ),
-                                  Container(
-                                    height: 50,
-                                    width: 70,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      color: Colors.white,
-                                    ),
-                                    child: const Center(
-                                      child: ClipRRect(
-                                        child: Image(
-                                          height: 25,
-                                          width: 25,
-                                          image: AssetImage(
-                                              "assets/icons/facebook.png"),
-                                          fit: BoxFit.fill,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
+                                children: const [
+                                  GoogleBtn(),
+                                  SizedBox(width: 20),
+                                  FacebookBtn(),
                                 ],
                               ),
                             )

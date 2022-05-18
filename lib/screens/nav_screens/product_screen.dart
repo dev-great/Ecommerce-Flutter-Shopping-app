@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:quicktel/components/const.dart';
-import 'package:quicktel/main.dart';
+import 'package:quicktel/components/product_snippet/shop_list.dart';
 import 'package:quicktel/models/banner_models.dart';
-import 'package:quicktel/models/shop_model.dart';
+import 'package:quicktel/models/graphql_model.dart';
 import 'package:intl/intl.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
@@ -54,70 +54,41 @@ class _ProductState extends State<Product> {
                   return CustomScrollView(
                     slivers: [
                       SliverAppBar(
-                          backgroundColor: const Color(0xFFE5E5E5),
-                          leading: IconButton(
-                            onPressed: () {},
-                            icon: const Icon(
-                              FontAwesomeIcons.barsStaggered,
-                              color: Colors.black,
-                              size: 20,
+                          backgroundColor: bgcl,
+                          leading: Padding(
+                            padding: const EdgeInsets.only(left: 15),
+                            child: IconButton(
+                              onPressed: () {},
+                              icon: const Icon(
+                                FontAwesomeIcons.barsStaggered,
+                                color: Color.fromARGB(167, 0, 0, 0),
+                                size: 20,
+                              ),
                             ),
                           ),
                           elevation: 0,
                           actions: [
-                            IconButton(
-                              onPressed: () {},
-                              icon: const Icon(
-                                FontAwesomeIcons.bell,
-                                color: Colors.black54,
-                                size: 20,
+                            Padding(
+                              padding: const EdgeInsets.only(right: 15),
+                              child: IconButton(
+                                onPressed: () {},
+                                icon: const Icon(
+                                  FontAwesomeIcons.bell,
+                                  color: Color.fromARGB(167, 0, 0, 0),
+                                  size: 25,
+                                ),
                               ),
                             ),
                           ],
-                          floating: false,
-                          pinned: true,
                           expandedHeight: 420.0,
                           flexibleSpace: FlexibleSpaceBar(
                             background: Container(
                               child: Padding(
                                 padding: const EdgeInsets.only(
-                                    top: 100, left: 10, right: 10),
+                                    top: 100, left: 15, right: 15),
                                 child: Column(
                                   children: <Widget>[
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        color: lightcl,
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      height: 50,
-                                      child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 10),
-                                        child: TextFormField(
-                                          decoration: const InputDecoration(
-                                              border: InputBorder.none,
-                                              fillColor: Colors.black,
-                                              prefixIcon:
-                                                  Icon(Icons.search, size: 30),
-                                              hintText:
-                                                  "What are you looking for?",
-                                              hintStyle: TextStyle(
-                                                color: Colors.black54,
-                                                fontSize: 18,
-                                                fontFamily: "GTWalsheimPro",
-                                              )),
-                                          onSaved: (v) {
-                                            _query = v!;
-                                          },
-                                          validator: (v) {
-                                            if (v!.isEmpty) {
-                                              return 'No item searched';
-                                            }
-                                            return null;
-                                          },
-                                        ),
-                                      ),
-                                    ),
+                                    search(),
                                     Padding(
                                       padding: const EdgeInsets.only(top: 20),
                                       child: Stack(
@@ -127,7 +98,7 @@ class _ProductState extends State<Product> {
                                             width: MediaQuery.of(context)
                                                 .size
                                                 .width,
-                                            color: lightcl,
+                                            color: bgcl,
                                             child: ClipRRect(
                                               borderRadius:
                                                   BorderRadius.circular(20),
@@ -172,9 +143,10 @@ class _ProductState extends State<Product> {
                                           ),
                                           Positioned(
                                             top: 100,
+                                            left: 10,
                                             child: Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
                                               children: img
                                                   .asMap()
                                                   .entries
@@ -183,10 +155,13 @@ class _ProductState extends State<Product> {
                                                   onTap: () => _controller
                                                       .animateToPage(entry.key),
                                                   child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
                                                     children: [
                                                       Container(
-                                                        width: 40.0,
-                                                        height: 5.0,
+                                                        width: 35.0,
+                                                        height: 3.0,
                                                         margin: const EdgeInsets
                                                                 .symmetric(
                                                             vertical: 8.0,
@@ -226,9 +201,9 @@ class _ProductState extends State<Product> {
                                                 const Text(
                                                   "Fashion Sale",
                                                   style: TextStyle(
-                                                      fontSize: 40,
+                                                      fontSize: 35,
                                                       color: lightcl,
-                                                      fontFamily: "Montserrat",
+                                                      fontFamily: "Poppins",
                                                       fontWeight:
                                                           FontWeight.w700,
                                                       decoration:
@@ -241,8 +216,7 @@ class _ProductState extends State<Product> {
                                                       style: TextStyle(
                                                           fontSize: 20,
                                                           color: lightcl,
-                                                          fontFamily:
-                                                              "Montserrat",
+                                                          fontFamily: "Poppins",
                                                           fontWeight:
                                                               FontWeight.w700,
                                                           decoration:
@@ -251,10 +225,10 @@ class _ProductState extends State<Product> {
                                                     ),
                                                     SizedBox(width: 5),
                                                     Icon(
-                                                      Icons
-                                                          .arrow_forward_ios_rounded,
-                                                      color: lightcl,
-                                                    )
+                                                        Icons
+                                                            .arrow_forward_ios_rounded,
+                                                        color: lightcl,
+                                                        size: 15)
                                                   ],
                                                 ),
                                               ],
@@ -270,6 +244,7 @@ class _ProductState extends State<Product> {
                                           "Shops near you",
                                           style: TextStyle(
                                               fontSize: 20,
+                                              fontFamily: "Poppins",
                                               color: Colors.black,
                                               fontWeight: FontWeight.bold),
                                         ),
@@ -280,6 +255,7 @@ class _ProductState extends State<Product> {
                                               "See All",
                                               style: TextStyle(
                                                   fontSize: 16,
+                                                  fontFamily: "Poppins",
                                                   color: Colors.black45,
                                                   fontWeight: FontWeight.bold),
                                             ),
@@ -293,44 +269,7 @@ class _ProductState extends State<Product> {
                                         ),
                                       ]),
                                     ),
-                                    Expanded(
-                                      child: ListView.builder(
-                                        shrinkWrap: true,
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: images.length,
-                                        itemBuilder:
-                                            (BuildContext context, int index) =>
-                                                Padding(
-                                          padding: const EdgeInsets.all(5.0),
-                                          child: Container(
-                                            width: 100,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(20),
-                                              image: DecorationImage(
-                                                  image: NetworkImage(
-                                                      images[index]),
-                                                  fit: BoxFit.cover),
-                                            ),
-                                            height: 50,
-                                            child: SizedBox(
-                                                width: 80,
-                                                child: Center(
-                                                  child: Text(
-                                                    store[index],
-                                                    maxLines: 2,
-                                                    style: const TextStyle(
-                                                        fontSize: 18,
-                                                        color: lightcl,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                    textAlign: TextAlign.center,
-                                                  ),
-                                                )),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
+                                    const Shop(),
                                     Padding(
                                       padding: const EdgeInsets.only(
                                           top: 5, bottom: 5),
@@ -341,6 +280,7 @@ class _ProductState extends State<Product> {
                                           Text(
                                             "Featured",
                                             style: TextStyle(
+                                                fontFamily: "Poppins",
                                                 fontSize: 20,
                                                 color: Colors.black,
                                                 fontWeight: FontWeight.bold),
@@ -423,6 +363,7 @@ class _ProductState extends State<Product> {
                                                 .toString(),
                                             style: const TextStyle(
                                               fontSize: 16,
+                                              fontFamily: "Poppins",
                                               color: Colors.black54,
                                               fontWeight: FontWeight.w500,
                                             ),
@@ -433,7 +374,8 @@ class _ProductState extends State<Product> {
                                                 .format(Random().nextInt(9999))
                                                 .toString(),
                                             style: const TextStyle(
-                                              fontSize: 20,
+                                              fontSize: 18,
+                                              fontFamily: "Poppins",
                                               color: Colors.black,
                                               fontWeight: FontWeight.bold,
                                             ),
@@ -457,7 +399,8 @@ class _ProductState extends State<Product> {
                                         child: Text(
                                       "-${Random().nextInt(50).toString()}%",
                                       style: const TextStyle(
-                                          fontSize: 16,
+                                          fontSize: 14,
+                                          fontFamily: "Poppins",
                                           color: lightcl,
                                           fontWeight: FontWeight.bold),
                                     )),
@@ -484,5 +427,41 @@ class _ProductState extends State<Product> {
                     ],
                   );
                 })));
+  }
+
+  Container search() {
+    return Container(
+      decoration: BoxDecoration(
+        color: lightcl,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      height: 50,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 10),
+        child: Center(
+          child: TextFormField(
+            decoration: const InputDecoration(
+                border: InputBorder.none,
+                fillColor: Colors.black,
+                prefixIcon: Icon(Icons.search, size: 25),
+                hintText: "What are you looking for?",
+                hintStyle: TextStyle(
+                  color: Colors.black54,
+                  fontSize: 16,
+                  fontFamily: "Poppins",
+                )),
+            onSaved: (v) {
+              _query = v!;
+            },
+            validator: (v) {
+              if (v!.isEmpty) {
+                return 'No item searched';
+              }
+              return null;
+            },
+          ),
+        ),
+      ),
+    );
   }
 }
