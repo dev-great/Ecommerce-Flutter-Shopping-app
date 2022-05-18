@@ -45,7 +45,34 @@ class _ProductState extends State<Product> {
                   }
 
                   if (result.isLoading) {
-                    return const Text('Loading');
+                    return Center(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          const Center(
+                            child: SizedBox(
+                              height: 50.0,
+                              width: 50.0,
+                              child: CircularProgressIndicator(
+                                value: null,
+                                strokeWidth: 7.0,
+                                color: maincl,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(top: 25.0),
+                            child: const Center(
+                              child: Text(
+                                "loading.. wait...",
+                                style: TextStyle(color: blackcl),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
                   }
 
                   final productList = result.data?['getInventoriesAtRandom'];
@@ -80,7 +107,7 @@ class _ProductState extends State<Product> {
                               ),
                             ),
                           ],
-                          expandedHeight: 420.0,
+                          expandedHeight: 450.0,
                           flexibleSpace: FlexibleSpaceBar(
                             background: Container(
                               child: Padding(
@@ -238,7 +265,8 @@ class _ProductState extends State<Product> {
                                       ),
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.only(top: 10),
+                                      padding: const EdgeInsets.only(
+                                          top: 10, bottom: 10),
                                       child: Row(children: [
                                         const Text(
                                           "Shops near you",
@@ -260,11 +288,13 @@ class _ProductState extends State<Product> {
                                                   fontWeight: FontWeight.bold),
                                             ),
                                             SizedBox(
-                                              width: 10,
+                                              width: 8,
                                             ),
                                             Icon(
-                                                Icons.arrow_forward_ios_rounded,
-                                                color: Colors.black45)
+                                              Icons.arrow_forward_ios_rounded,
+                                              color: Colors.black45,
+                                              size: 20,
+                                            )
                                           ],
                                         ),
                                       ]),
@@ -272,7 +302,7 @@ class _ProductState extends State<Product> {
                                     const Shop(),
                                     Padding(
                                       padding: const EdgeInsets.only(
-                                          top: 5, bottom: 5),
+                                          top: 10, bottom: 0),
                                       child: Row(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
